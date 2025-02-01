@@ -1,42 +1,37 @@
 package com.example.demo.entity;
 
-import java.security.Timestamp;
+import jakarta.persistence.*;
+import lombok.Data;
+import java.sql.Timestamp;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
+@Data
 @Entity
 @Table(name = "actor")
 public class Actor {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "actor_id")
-	private Short actorId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "actor_id", nullable = false, columnDefinition = "SMALLINT UNSIGNED")
+    private Integer actorId;
 
-	@Column(name = "first_name", nullable = false, length = 45)
-	private String firstName;
+    @Column(name = "first_name", nullable = false, length = 45)
+    private String firstName;
 
-	@Column(name = "last_name", nullable = false, length = 45)
-	private String lastName;
+    @Column(name = "last_name", nullable = false, length = 45)
+    private String lastName;
 
-	@Column(name = "last_update", nullable = false)
-	private Timestamp lastUpdate;
+    @Column(name = "last_update", nullable = false)
+    private Timestamp lastUpdate;
 
-	@OneToMany(mappedBy = "actor")
-	private Set<FilmActor> filmActors;
+    @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL)
+    private Set<FilmActor> filmActors;
 
-	public Short getActorId() {
+	public Integer getActorId() {
 		return actorId;
 	}
 
-	public void setActorId(Short actorId) {
+	public void setActorId(Integer actorId) {
 		this.actorId = actorId;
 	}
 
@@ -71,6 +66,5 @@ public class Actor {
 	public void setFilmActors(Set<FilmActor> filmActors) {
 		this.filmActors = filmActors;
 	}
-	
-	
+    
 }

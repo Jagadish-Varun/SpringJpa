@@ -1,43 +1,37 @@
 package com.example.demo.entity;
 
-import java.security.Timestamp;
+import jakarta.persistence.*;
+import lombok.Data;
+import java.sql.Timestamp;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
+@Data
 @Entity
 @Table(name = "language")
 public class Language {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "language_id")
-	private int languageId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "language_id", nullable = false, columnDefinition = "TINYINT UNSIGNED")
+    private Integer languageId;
 
-	@Column(name = "name", nullable = false, length = 20)
-	private String name;
+    @Column(name = "name", nullable = false, length = 20)
+    private String name;
 
-	@Column(name = "last_update", nullable = false)
-	private Timestamp lastUpdate;
+    @Column(name = "last_update", nullable = false)
+    private Timestamp lastUpdate;
 
-    @OneToMany(mappedBy = "originalLanguage")
-    private Set<Film> originalFilms;
+    @OneToMany(mappedBy = "language", cascade = CascadeType.ALL)
+    private Set<Film> films;
 
-    @ManyToMany(mappedBy = "languages")
-    private Set<Film> translatedFilms;
+    @OneToMany(mappedBy = "originalLanguage", cascade = CascadeType.ALL)
+    private Set<Film> originalLanguageFilms;
 
-	public int getLanguageId() {
+	public Integer getLanguageId() {
 		return languageId;
 	}
 
-	public void setLanguageId(int languageId) {
+	public void setLanguageId(Integer languageId) {
 		this.languageId = languageId;
 	}
 
@@ -57,22 +51,22 @@ public class Language {
 		this.lastUpdate = lastUpdate;
 	}
 
-	public Set<Film> getOriginalFilms() {
-		return originalFilms;
+	public Set<Film> getFilms() {
+		return films;
 	}
 
-	public void setOriginalFilms(Set<Film> originalFilms) {
-		this.originalFilms = originalFilms;
+	public void setFilms(Set<Film> films) {
+		this.films = films;
 	}
 
-	public Set<Film> getTranslatedFilms() {
-		return translatedFilms;
+	public Set<Film> getOriginalLanguageFilms() {
+		return originalLanguageFilms;
 	}
 
-	public void setTranslatedFilms(Set<Film> translatedFilms) {
-		this.translatedFilms = translatedFilms;
+	public void setOriginalLanguageFilms(Set<Film> originalLanguageFilms) {
+		this.originalLanguageFilms = originalLanguageFilms;
 	}
     
     
-
 }
+

@@ -1,6 +1,8 @@
-package com.example.demo.spec;
-
-public enum SpecialFeature {
-
-	 TRAILERS, COMMENTARIES, DELETED_SCENES, BEHIND_THE_SCENES
-}
+//package com.example.demo.spec;
+//
+//public enum SpecialFeature {
+//    BEHIND_THE_SCENES,
+//    COMMENTARIES,
+//    DELETED_SCENES,
+//    TRAILERS;
+//}

@@ -1,205 +1,211 @@
 package com.example.demo.entity;
 
-import java.math.BigDecimal;
-import java.security.Timestamp;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import com.example.demo.spec.SpecialFeature;
-
-import jakarta.persistence.CollectionTable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Set;
+
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "film")
-public class Film {
+@Data
+public class Film implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "film_id")
-	    private Short filmId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "film_id", nullable = false, columnDefinition = "SMALLINT UNSIGNED")
+	private Integer filmId;
 
-	    @Column(name = "title", nullable = false, length = 128)
-	    private String title;
+	@Column(name = "title", nullable = false, length = 128)
+	private String title;
 
-	    @Column(name = "description")
-	    private String description;
+	@Column(name = "description", columnDefinition = "TEXT")
+	private String description;
 
-	    @Column(name = "release_year")
-	    private Integer releaseYear;
+	@Column(name = "release_year", columnDefinition = "YEAR")
+	private Integer releaseYear;
 
-	    @ManyToMany
-	    @JoinTable(
-	    		name = "film_language",
-	    		joinColumns = @JoinColumn(name = "film_id"),
-	    		inverseJoinColumns = @JoinColumn(name ="language_id")
-	    		)
-	    private Set<Language> languages;
+	@ManyToOne(fetch = FetchType.EAGER) // Load immediately instead of Lazy
+	@JoinColumn(name = "language_id", referencedColumnName = "language_id", nullable = false)
+	private Language language;
 
-	    @ManyToOne
-	    @JoinColumn(name = "original_language_id")
-	    private Language originalLanguage;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "original_language_id", referencedColumnName = "language_id")
+	private Language originalLanguage;
 
-	    @Column(name = "rental_duration", nullable = false)
-	    private Short rentalDuration = 3;
+	@Column(name = "rental_duration", nullable = false, columnDefinition = "TINYINT UNSIGNED DEFAULT 3")
+	private Integer rentalDuration;
 
-	    @Column(name = "rental_rate", nullable = false, precision = 4, scale = 2)
-	    private BigDecimal rentalRate = new BigDecimal("4.99");
+	@Column(name = "rental_rate", nullable = false, precision = 4, scale = 2)
+	private BigDecimal rentalRate;
 
-	    @Column(name = "length")
-	    private Short length;
+	@Column(name = "length", columnDefinition = "SMALLINT UNSIGNED")
+	private Integer length;
 
-	    @Column(name = "replacement_cost", nullable = false, precision = 5, scale = 2)
-	    private BigDecimal replacementCost = new BigDecimal("19.99");
+	@Column(name = "replacement_cost", nullable = false, precision = 5, scale = 2)
+	private BigDecimal replacementCost;
 
-	   
-	    @Column(name = "rating")
-	    private String rating;
+	@Convert(converter = RatingConverter.class)
+	private Rating rating;
 
-	    @Enumerated(EnumType.STRING)
-	    @CollectionTable(name = "film_special_features", joinColumns = @JoinColumn(name = "film_id"))
-	    @Column(name = "special_feature")
-	    private Set<SpecialFeature> specialFeatures;
+	@Column(name = "special_features", columnDefinition = "SET('Trailers','Commentaries','Deleted Scenes','Behind the Scenes')")
+	private String specialFeatures;
 
-	    @OneToMany(mappedBy = "film")
-	    private Set<FilmCategory> filmCategories;
+	@Column(name = "last_update", nullable = false)
+	private Timestamp lastUpdate;
 
-	    @OneToMany(mappedBy = "film")
-	    private Set<FilmActor> filmActors;
 
-	    @Column(name = "last_update", nullable = false)
-	    private Timestamp lastUpdate;
+	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties("film")
+	private Set<FilmActor> filmActors;
 
-		public Short getFilmId() {
-			return filmId;
-		}
+	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties("film")
+	private Set<FilmCategory> filmCategories;
 
-		public void setFilmId(Short filmId) {
-			this.filmId = filmId;
-		}
+	public Integer getFilmId() {
+		return filmId;
+	}
 
-		public String getTitle() {
-			return title;
-		}
+	public void setFilmId(Integer filmId) {
+		this.filmId = filmId;
+	}
 
-		public void setTitle(String title) {
-			this.title = title;
-		}
+	public String getTitle() {
+		return title;
+	}
 
-		public String getDescription() {
-			return description;
-		}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+	public String getDescription() {
+		return description;
+	}
 
-		public Integer getReleaseYear() {
-			return releaseYear;
-		}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-		public void setReleaseYear(Integer releaseYear) {
-			this.releaseYear = releaseYear;
-		}
+	public Integer getReleaseYear() {
+		return releaseYear;
+	}
 
-		public Set<Language> getLanguages() {
-			return languages;
-		}
+	public void setReleaseYear(Integer releaseYear) {
+		this.releaseYear = releaseYear;
+	}
 
-		public void setLanguages(Set<Language> languages) {
-			this.languages = languages;
-		}
+	public Language getLanguage() {
+		return language;
+	}
 
-		public Language getOriginalLanguage() {
-			return originalLanguage;
-		}
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
 
-		public void setOriginalLanguage(Language originalLanguage) {
-			this.originalLanguage = originalLanguage;
-		}
+	public Language getOriginalLanguage() {
+		return originalLanguage;
+	}
 
-		public Short getRentalDuration() {
-			return rentalDuration;
-		}
+	public void setOriginalLanguage(Language originalLanguage) {
+		this.originalLanguage = originalLanguage;
+	}
 
-		public void setRentalDuration(Short rentalDuration) {
-			this.rentalDuration = rentalDuration;
-		}
+	public Integer getRentalDuration() {
+		return rentalDuration;
+	}
 
-		public BigDecimal getRentalRate() {
-			return rentalRate;
-		}
+	public void setRentalDuration(Integer rentalDuration) {
+		this.rentalDuration = rentalDuration;
+	}
 
-		public void setRentalRate(BigDecimal rentalRate) {
-			this.rentalRate = rentalRate;
-		}
+	public BigDecimal getRentalRate() {
+		return rentalRate;
+	}
 
-		public Short getLength() {
-			return length;
-		}
+	public void setRentalRate(BigDecimal rentalRate) {
+		this.rentalRate = rentalRate;
+	}
 
-		public void setLength(Short length) {
-			this.length = length;
-		}
+	public Integer getLength() {
+		return length;
+	}
 
-		public BigDecimal getReplacementCost() {
-			return replacementCost;
-		}
+	public void setLength(Integer length) {
+		this.length = length;
+	}
 
-		public void setReplacementCost(BigDecimal replacementCost) {
-			this.replacementCost = replacementCost;
-		}
+	public BigDecimal getReplacementCost() {
+		return replacementCost;
+	}
 
-		public String getRating() {
-			return rating;
-		}
+	public void setReplacementCost(BigDecimal replacementCost) {
+		this.replacementCost = replacementCost;
+	}
 
-		public void setRating(String rating) {
-			this.rating = rating;
-		}
+	public Rating getRating() {
+		return rating;
+	}
 
-		public Set<SpecialFeature> getSpecialFeatures() {
-			return specialFeatures;
-		}
+	public void setRating(Rating rating) {
+		this.rating = rating;
+	}
 
-		public void setSpecialFeatures(Set<SpecialFeature> specialFeatures) {
-			this.specialFeatures = specialFeatures;
-		}
+	public String getSpecialFeatures() {
+		return specialFeatures;
+	}
 
-		public Set<FilmCategory> getFilmCategories() {
-			return filmCategories;
-		}
+	public void setSpecialFeatures(String specialFeatures) {
+		this.specialFeatures = specialFeatures;
+	}
 
-		public void setFilmCategories(Set<FilmCategory> filmCategories) {
-			this.filmCategories = filmCategories;
-		}
+	public Timestamp getLastUpdate() {
+		return lastUpdate;
+	}
 
-		public Set<FilmActor> getFilmActors() {
-			return filmActors;
-		}
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-		public void setFilmActors(Set<FilmActor> filmActors) {
-			this.filmActors = filmActors;
-		}
+	public Set<FilmActor> getFilmActors() {
+		return filmActors;
+	}
 
-		public Timestamp getLastUpdate() {
-			return lastUpdate;
-		}
+	public void setFilmActors(Set<FilmActor> filmActors) {
+		this.filmActors = filmActors;
+	}
 
-		public void setLastUpdate(Timestamp lastUpdate) {
-			this.lastUpdate = lastUpdate;
-		}
-	    
-	    
+	public Set<FilmCategory> getFilmCategories() {
+		return filmCategories;
+	}
+
+	public void setFilmCategories(Set<FilmCategory> filmCategories) {
+		this.filmCategories = filmCategories;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	
+	
 }
