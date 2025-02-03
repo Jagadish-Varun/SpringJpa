@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.FilmDTO;
-import com.example.demo.entity.Film;
 import com.example.demo.service.FilmService;
 
 @RestController
@@ -26,7 +25,7 @@ public class FilmController {
 	public ResponseEntity<List<FilmDTO>> getFilmsWithDetails(@PathVariable String categoryName) {
 	    List<FilmDTO> filmDTOs = filmService.getFilmsWithDetails(categoryName)
 	                                        .stream()
-	                                        .map(FilmDTO::new)  // ✅ Now it works!
+	                                        .map(FilmDTO::new)  
 	                                        .collect(Collectors.toList());
 
 	    return ResponseEntity.ok(filmDTOs);
