@@ -70,9 +70,6 @@ public class Film implements Serializable {
 	@Column(name = "special_features", columnDefinition = "SET('Trailers','Commentaries','Deleted Scenes','Behind the Scenes')")
 	private String specialFeatures;
 
-	@Column(name = "last_update", nullable = false)
-	private Timestamp lastUpdate;
-
 
 	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnoreProperties("film")
@@ -81,6 +78,9 @@ public class Film implements Serializable {
 	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnoreProperties("film")
 	private Set<FilmCategory> filmCategories;
+	
+	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
+	private Set<Rental> rentals;
 
 	public Integer getFilmId() {
 		return filmId;
@@ -178,14 +178,6 @@ public class Film implements Serializable {
 		this.specialFeatures = specialFeatures;
 	}
 
-	public Timestamp getLastUpdate() {
-		return lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
 	public Set<FilmActor> getFilmActors() {
 		return filmActors;
 	}
@@ -200,6 +192,14 @@ public class Film implements Serializable {
 
 	public void setFilmCategories(Set<FilmCategory> filmCategories) {
 		this.filmCategories = filmCategories;
+	}
+
+	public Set<Rental> getRentals() {
+		return rentals;
+	}
+
+	public void setRentals(Set<Rental> rentals) {
+		this.rentals = rentals;
 	}
 
 	public static long getSerialversionuid() {
