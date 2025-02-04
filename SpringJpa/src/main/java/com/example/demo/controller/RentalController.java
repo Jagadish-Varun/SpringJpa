@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.RentalHistoryDTO;
 import com.example.demo.service.RentalService;
 
 @RestController
@@ -19,8 +20,8 @@ public class RentalController {
 	private RentalService rentalService;
 
 	@GetMapping("/history/{customerId}")
-	public ResponseEntity<List<Object[]>> getRentalHistory(@PathVariable Integer customerId) {
-		List<Object[]> rentalHistory = rentalService.getRentalHistory(customerId);
+	public ResponseEntity<List<RentalHistoryDTO>> getRentalHistory(@PathVariable Integer customerId) {
+		List<RentalHistoryDTO> rentalHistory = rentalService.getRentalHistory(customerId);
 		return ResponseEntity.ok(rentalHistory);
 	}
 }
