@@ -4,9 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Data
 @Entity
 @Table(name = "film_actor")
+@JsonIgnoreProperties({"actor", "film"})
 public class FilmActor {
 
     @EmbeddedId
@@ -15,6 +19,7 @@ public class FilmActor {
     @ManyToOne
     @MapsId("actorId")
     @JoinColumn(name = "actor_id", referencedColumnName = "actor_id")
+    @JsonBackReference
     private Actor actor;
 
     @ManyToOne

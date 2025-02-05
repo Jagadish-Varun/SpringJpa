@@ -22,11 +22,11 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Set;
 
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "film")
 @Data
+@JsonIgnoreProperties({"filmActors", "filmCategories", "rentals"}) 
 public class Film implements Serializable {
 	private static final long serialVersionUID = 1L;
 

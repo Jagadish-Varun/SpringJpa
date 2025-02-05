@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.ActorDTO;
@@ -16,9 +17,14 @@ public class ActorService {
 	@Autowired
 	private ActorRepository actorRepository;
 
-	public List<ActorDTO> getActorsByLanguage(String languageName) {
-		List<Actor> actors = actorRepository.findActorsByLanguage(languageName);
-		return actors.stream().map(ActorDTO::new).collect(Collectors.toList());
-	}
+//	public List<ActorDTO> getActorsByLanguage(String languageName) {
+//		List<Actor> actors = actorRepository.findActorsByLanguage(languageName);
+//		return actors.stream().map(ActorDTO::new).collect(Collectors.toList());
+//	}
+	
+	 public List<Actor> getActorsByLanguage(String languageName) {
+	        Specification<Actor> spec = ActorRepository.findActorsByLanguageSpec(languageName);
+	        return actorRepository.findAll(spec);
+	    }
 
 }

@@ -5,9 +5,12 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.Set;
 
-@Data
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "language")
+@JsonIgnoreProperties({"films", "originalLanguageFilms"}) 
 public class Language {
 
     @Id
@@ -22,6 +25,7 @@ public class Language {
     private Timestamp lastUpdate;
 
     @OneToMany(mappedBy = "language", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Film> films;
 
     @OneToMany(mappedBy = "originalLanguage", cascade = CascadeType.ALL)
