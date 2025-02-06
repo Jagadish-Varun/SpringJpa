@@ -5,6 +5,7 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,13 +27,9 @@ public class Rental {
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "inventory_id", nullable = false)
-	private Inventory inventory; 
-	
-	@ManyToOne  
-    @JoinColumn(name = "film_id", nullable = false)
-    private Film film;
+	private Inventory inventory;
 
 	@OneToMany(mappedBy = "rental", cascade = CascadeType.ALL)
 	private Set<Payment> payments;
@@ -69,13 +66,6 @@ public class Rental {
 		this.payments = payments;
 	}
 
-	public Film getFilm() {
-		return film;
-	}
-
-	public void setFilm(Film film) {
-		this.film = film;
-	}
 	
 	
 }

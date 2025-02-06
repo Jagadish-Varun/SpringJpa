@@ -19,7 +19,6 @@ public class ActorController {
 	@Autowired
 	private ActorService actorService;
 
-
 	@GetMapping("/by-language/{languageName}")
 	public ResponseEntity<List<Actor>> getActorsByLanguage(@PathVariable String languageName) {
 		List<Actor> actors = actorService.getActorsByLanguage(languageName);
@@ -31,5 +30,10 @@ public class ActorController {
 			@PathVariable int minFilmsActed) {
 		List<Actor> actors = actorService.getActorsByLanguageAndMinFilms(languageName, minFilmsActed);
 		return ResponseEntity.ok(actors);
+	}
+
+	@GetMapping("/{firstName}/{lastName}")
+	public List<Actor> getActorsByName(@PathVariable String firstName, @PathVariable String lastName) {
+		return actorService.findActors(firstName, lastName);
 	}
 }

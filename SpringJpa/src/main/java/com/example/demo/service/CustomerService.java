@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Customer;
 import com.example.demo.entity.Payment;
-import com.example.demo.entity.Rental;
-import com.example.demo.repo.RentalRepository;
+import com.example.demo.repo.CustomerRepository;
 
 @Service
-public class RentalService {
+public class CustomerService {
 
 	@Autowired
-	private RentalRepository rentalRepository;
+	private CustomerRepository customerRepository;
 
-	 
+	
 }

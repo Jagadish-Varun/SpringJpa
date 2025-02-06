@@ -75,12 +75,12 @@ public class Film implements Serializable {
 	@JsonIgnoreProperties("film")
 	private Set<FilmActor> filmActors;
 
-	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnoreProperties("film")
-	private Set<FilmCategory> filmCategories;
-	
 	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
-	private Set<Rental> rentals;
+	private Set<FilmCategory> filmCategories; 
+	
+//	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
+//	private Set<Rental> rentals;
+//	
 
 	public Integer getFilmId() {
 		return filmId;
@@ -194,18 +194,16 @@ public class Film implements Serializable {
 		this.filmCategories = filmCategories;
 	}
 
-	public Set<Rental> getRentals() {
-		return rentals;
-	}
-
-	public void setRentals(Set<Rental> rentals) {
-		this.rentals = rentals;
-	}
+//	public Set<Rental> getRentals() {
+//		return rentals;
+//	}
+//
+//	public void setRentals(Set<Rental> rentals) {
+//		this.rentals = rentals;
+//	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
-	
 	
 }

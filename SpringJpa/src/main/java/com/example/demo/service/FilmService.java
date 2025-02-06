@@ -28,20 +28,24 @@ public class FilmService {
 		return filmRepository.findAll(spec);
 	}
 
-	
-	 public List<FilmDetailsDTO> getFilmsByYear(Integer releaseYear) {
-	        Specification<Film> spec = FilmRepository.findFilmsByYear(releaseYear);
-	        List<Film> films = filmRepository.findAll(spec);
+	public List<FilmDetailsDTO> getFilmsByYear(Integer releaseYear) {
+		Specification<Film> spec = FilmRepository.findFilmsByYear(releaseYear);
+		List<Film> films = filmRepository.findAll(spec);
 
-	        return films.stream().map(film -> new FilmDetailsDTO(
-	                film.getTitle(),
-	                film.getDescription(),
-	                film.getLanguage().getLanguageId(),
-	                film.getSpecialFeatures(),
-	                film.getFilmActors().stream()
-	                        .map(fa -> fa.getActor().getFirstName() + " " + fa.getActor().getLastName())
-	                        .collect(Collectors.toList()),
-	                film.getFilmCategories().isEmpty() ? "Unknown" : film.getFilmCategories().iterator().next().getCategory().getName()
-	        )).collect(Collectors.toList());
-	    }
+		return films.stream()
+				.map(film -> new FilmDetailsDTO(film.getTitle(), film.getDescription(),
+						film.getLanguage().getLanguageId(), film.getSpecialFeatures(),
+						film.getFilmActors().stream()
+								.map(fa -> fa.getActor().getFirstName() + " " + fa.getActor().getLastName())
+								.collect(Collectors.toList()),
+						film.getFilmCategories().isEmpty() ? "Unknown"
+								: film.getFilmCategories().iterator().next().getCategory().getName()))
+				.collect(Collectors.toList());
+	}
+
+	public List<Film> findFilmsByActor(String firstName, String lastName) {
+		Specification<Film> spec = FilmRepository.findByActorName(firstName, lastName);
+		return filmRepository.findAll(spec);
+	}
+
 }

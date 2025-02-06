@@ -24,5 +24,10 @@ public class ActorService {
 		Specification<Actor> spec = ActorRepository.findActorsByLanguageAndMinFilms(languageName, minFilmsActed);
 		return actorRepository.findAll(spec);
 	}
+	
+	public List<Actor> findActors(String firstName, String lastName) {
+        Specification<Actor> spec = ActorRepository.findByFirstAndLastName(firstName, lastName);
+        return actorRepository.findAll(spec);
+    }
 
 }

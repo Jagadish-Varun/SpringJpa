@@ -36,5 +36,10 @@ public class FilmController {
 		List<FilmDetailsDTO> films = filmService.getFilmsByYear(releaseYear);
 		return ResponseEntity.ok(films);
 	}
+	
+	@GetMapping("/{firstName}/{lastName}")
+    public List<Film> getFilmsByActor(@PathVariable String firstName, @PathVariable String lastName) {
+        return filmService.findFilmsByActor(firstName, lastName);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.repo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -16,10 +17,13 @@ import com.example.demo.entity.Category;
 import com.example.demo.entity.Film;
 import com.example.demo.entity.FilmActor;
 import com.example.demo.entity.FilmCategory;
+import com.example.demo.entity.Inventory;
 import com.example.demo.entity.Language;
+import com.example.demo.entity.Rental;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
@@ -70,5 +74,25 @@ public interface FilmRepository extends JpaRepository<Film, Integer>, JpaSpecifi
 	         return cb.and(releaseYearPredicate);
 		};
 	}
+	
+	public static Specification<Film> findByActorName(String firstName, String lastName) {
+        return (root, query, criteriaBuilder) -> {
+            Join<Film, FilmActor> filmActorJoin = root.join("filmActors");
+            
+            Join<FilmActor, Actor> actorJoin = filmActorJoin.join("actor");
 
+            List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
+            
+            if (firstName != null && !firstName.isEmpty()) {
+                predicates.add(criteriaBuilder.equal(actorJoin.get("firstName"), firstName));
+            }
+            
+            if (lastName != null && !lastName.isEmpty()) {
+                predicates.add(criteriaBuilder.equal(actorJoin.get("lastName"), lastName));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+        };
+    }
+	
 }

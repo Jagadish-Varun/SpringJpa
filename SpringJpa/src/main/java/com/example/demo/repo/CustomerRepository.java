@@ -1,5 +1,6 @@
 package com.example.demo.repo;
 
+
 import java.math.BigDecimal;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -22,8 +23,8 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-public interface RentalRepository extends JpaRepository<Rental, Integer>, JpaSpecificationExecutor<Rental> {
+
+public interface CustomerRepository extends JpaRepository<Customer, Integer>, JpaSpecificationExecutor<Customer> {
 
 	
-
 }

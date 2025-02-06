@@ -1,6 +1,9 @@
 package com.example.demo.repo;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -55,5 +58,21 @@ public interface ActorRepository extends JpaRepository<Actor, Integer>, JpaSpeci
 			 return cb.and();
 		 };
 	}
+	
+	 public static Specification<Actor> findByFirstAndLastName(String firstName, String lastName) {
+	        return (root, query, criteriaBuilder) -> {
+	            List<Predicate> predicates = new ArrayList<>();
+	            
+	            if (firstName != null && !firstName.isEmpty()) {
+	                predicates.add(criteriaBuilder.equal(root.get("firstName"), firstName));
+	            }
+	            
+	            if (lastName != null && !lastName.isEmpty()) {
+	                predicates.add(criteriaBuilder.equal(root.get("lastName"), lastName));
+	            }
+
+	            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+	        };
+	    }
 	
 }
