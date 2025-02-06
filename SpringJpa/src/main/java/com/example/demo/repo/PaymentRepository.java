@@ -11,12 +11,4 @@ import com.example.demo.entity.Payment;
 
 public interface PaymentRepository extends JpaRepository<Payment, Integer>, JpaSpecificationExecutor<Payment> {
 
-	@Query("SELECT c.firstName || ' ' || c.lastName, SUM(p.amount), GROUP_CONCAT(DISTINCT f.title) " + "FROM Payment p "
-			+ "JOIN p.rental r " + "JOIN r.customer c " + "JOIN r.inventory i " + "JOIN i.film f "
-			+ "JOIN f.language l " + "JOIN f.filmCategories fc " + "JOIN fc.category cat " + "JOIN f.filmActors fa "
-			+ "JOIN fa.actor a "
-			+ "WHERE LOWER(c.firstName) = LOWER(:customerName) OR LOWER(c.lastName) = LOWER(:customerName) "
-			+ "GROUP BY c.firstName, c.lastName")
-	List<Object[]> findPaymentsByCustomer(@Param("customerName") String customerName);
-
 }

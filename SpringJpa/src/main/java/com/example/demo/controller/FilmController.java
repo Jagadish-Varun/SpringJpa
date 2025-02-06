@@ -23,13 +23,6 @@ public class FilmController {
 	@Autowired
 	private FilmService filmService;
 
-//	@GetMapping("/details/{categoryName}")
-//	public ResponseEntity<List<FilmDTO>> getFilmsWithDetails(@PathVariable String categoryName) {
-//		List<FilmDTO> filmDTOs = filmService.getFilmsWithDetails(categoryName).stream().map(FilmDTO::new)
-//				.collect(Collectors.toList());
-//
-//		return ResponseEntity.ok(filmDTOs);
-//	}
 
 	@GetMapping("/details/{categoryName}")
 	public ResponseEntity<List<Film>> getFilmsByCategory(@PathVariable String categoryName) {
@@ -37,11 +30,6 @@ public class FilmController {
 		return ResponseEntity.ok(films);
 	}
 
-	@GetMapping("/top-rented")
-	public ResponseEntity<List<TopRentedFilmDTO>> getTopRentedFilms() {
-		List<TopRentedFilmDTO> films = filmService.getTopRentedFilms();
-		return ResponseEntity.ok(films);
-	}
 
 	@GetMapping("/by-year/{releaseYear}")
 	public ResponseEntity<List<FilmDetailsDTO>> getFilmsByYear(@PathVariable Integer releaseYear) {

@@ -17,11 +17,5 @@ public class PaymentService {
 	@Autowired
 	private PaymentRepository paymentRepository;
 
-	public List<CustomerPaymentDTO> getPaymentsByCustomer(String customerName) {
-		List<Object[]> results = paymentRepository.findPaymentsByCustomer(customerName);
-
-		return results.stream().map(obj -> new CustomerPaymentDTO((String) obj[0], (BigDecimal) obj[1],
-				Arrays.asList(((String) obj[2]).split(",")))).collect(Collectors.toList());
-	}
 
 }

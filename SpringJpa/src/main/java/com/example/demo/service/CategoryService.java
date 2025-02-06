@@ -16,10 +16,5 @@ public class CategoryService {
 	@Autowired
     private CategoryRepository categoryRepository;
 
-    public List<CategoryDTO> getCategoriesByActor(String firstName, String lastName) {
-        List<Category> categories = categoryRepository.findCategoriesByActor(firstName, lastName);
-        return categories.stream()
-                         .map(CategoryDTO::new)  
-                         .collect(Collectors.toList());
-    }
+  
 }

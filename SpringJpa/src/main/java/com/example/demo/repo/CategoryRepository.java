@@ -10,13 +10,5 @@ import com.example.demo.entity.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer>{
 	
-	 @Query("SELECT DISTINCT c FROM Category c " +
-	           "JOIN c.filmCategories fc " +
-	           "JOIN fc.film f " +
-	           "JOIN f.filmActors fa " +
-	           "JOIN fa.actor a " +
-	           "WHERE LOWER(a.firstName) = LOWER(:firstName) AND LOWER(a.lastName) = LOWER(:lastName)")
-	  List<Category> findCategoriesByActor(@Param("firstName") String firstName, 
-	                                       @Param("lastName") String lastName);
 
 }

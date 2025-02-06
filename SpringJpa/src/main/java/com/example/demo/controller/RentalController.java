@@ -19,9 +19,4 @@ public class RentalController {
 	@Autowired
 	private RentalService rentalService;
 
-	@GetMapping("/history/{customerId}")
-	public ResponseEntity<List<RentalHistoryDTO>> getRentalHistory(@PathVariable Integer customerId) {
-		List<RentalHistoryDTO> rentalHistory = rentalService.getRentalHistory(customerId);
-		return ResponseEntity.ok(rentalHistory);
-	}
 }

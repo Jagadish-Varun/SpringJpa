@@ -19,11 +19,5 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@GetMapping("/by-actor/{firstName}/{lastName}")
-	public ResponseEntity<List<CategoryDTO>> getCategoriesByActor(@PathVariable String firstName,
-			@PathVariable String lastName) {
-		List<CategoryDTO> categories = categoryService.getCategoriesByActor(firstName, lastName);
-		return ResponseEntity.ok(categories);
-	}
 
 }

@@ -23,18 +23,11 @@ public class FilmService {
 	@Autowired
 	private FilmRepository filmRepository;
 
-//	public List<Film> getFilmsWithDetails(String categoryName) {
-//		return filmRepository.findFilmsWithDetails(categoryName);
-//	}
-
 	public List<Film> getFilmsWithDetails(String categoryName) {
 		Specification<Film> spec = FilmRepository.findFilmsWithDetailsSpec(categoryName);
 		return filmRepository.findAll(spec);
 	}
 
-	public List<TopRentedFilmDTO> getTopRentedFilms() {
-		return filmRepository.findTopRentedFilms();
-	}
 	
 	 public List<FilmDetailsDTO> getFilmsByYear(Integer releaseYear) {
 	        Specification<Film> spec = FilmRepository.findFilmsByYear(releaseYear);

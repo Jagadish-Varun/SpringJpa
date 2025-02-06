@@ -14,7 +14,4 @@ public class RentalService {
 	@Autowired
 	private RentalRepository rentalRepository;
 
-	public List<RentalHistoryDTO> getRentalHistory(Integer customerId) {
-		return rentalRepository.findRentalHistoryByCustomerId(customerId);
-	}
 }

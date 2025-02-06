@@ -19,9 +19,5 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @GetMapping("/customer/{customerName}")
-    public ResponseEntity<List<CustomerPaymentDTO>> getPaymentsByCustomer(@PathVariable String customerName) {
-        List<CustomerPaymentDTO> payments = paymentService.getPaymentsByCustomer(customerName);
-        return ResponseEntity.ok(payments);
-    }
+  
 }

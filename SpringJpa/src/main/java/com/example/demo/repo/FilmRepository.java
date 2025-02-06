@@ -27,23 +27,6 @@ import jakarta.persistence.criteria.Root;
 @EnableJpaRepositories
 public interface FilmRepository extends JpaRepository<Film, Integer>, JpaSpecificationExecutor<Film> {
 
-//	@Query("SELECT DISTINCT f FROM Film f " +
-//		       "LEFT JOIN FETCH f.filmCategories fc " +
-//		       "LEFT JOIN FETCH fc.category c " +
-//		       "LEFT JOIN FETCH f.filmActors fa " +
-//		       "LEFT JOIN FETCH fa.actor a " +
-//		       "LEFT JOIN FETCH f.language lang " +  
-//		       "LEFT JOIN FETCH f.originalLanguage origLang " +  
-//		       "WHERE LOWER(c.name) = LOWER(:categoryName)")
-//	List<Film> findFilmsWithDetails(@Param("categoryName") String categoryName);
-
-	@Query("SELECT new com.example.demo.dto.TopRentedFilmDTO("
-			+ "f.title, COUNT(r.rentalId), COALESCE(SUM(p.amount), 0), cat.name, "
-			+ "a.firstName || ' ' || a.lastName) " + "FROM Rental r " + "JOIN r.inventory i " + "JOIN i.film f "
-			+ "JOIN f.filmCategories fc " + "JOIN fc.category cat " + "JOIN f.filmActors fa " + "JOIN fa.actor a "
-			+ "LEFT JOIN r.payments p " + "GROUP BY f.title, cat.name, a.firstName, a.lastName "
-			+ "ORDER BY COUNT(r.rentalId) DESC")
-	List<TopRentedFilmDTO> findTopRentedFilms();
 
 	@SuppressWarnings("unused")
 	public static Specification<Film> findFilmsWithDetailsSpec(String categoryName) {
