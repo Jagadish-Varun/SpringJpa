@@ -81,19 +81,16 @@ public interface InventoryRepository extends JpaRepository<Inventory, Integer>, 
 
 			List<Predicate> predicates = new ArrayList<>();
 
-			// 🔹 Filter by Film Title
 			if (filmTitle != null && !filmTitle.isEmpty()) {
 				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(filmJoin.get("title")),
 						"%" + filmTitle.toLowerCase() + "%"));
 			}
 
-			// 🔹 Filter by Category Name
 			if (categoryName != null && !categoryName.isEmpty()) {
 				predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(categoryJoin.get("name")),
 						categoryName.toLowerCase()));
 			}
 
-			// 🔹 Filter by Customer Last Name
 			if (customerLastName != null && !customerLastName.isEmpty()) {
 				predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(customerJoin.get("lastName")),
 						customerLastName.toLowerCase()));
