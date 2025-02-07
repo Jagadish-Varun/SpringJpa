@@ -20,10 +20,16 @@ public class InventoryController {
 	@Autowired
 	private InventoryService inventoryService;
 
-	@GetMapping("/{actorFirstName}/{categoryName}/{languageName}")
+	@GetMapping("/films/{actorFirstName}/{categoryName}/{languageName}")
 	public List<Inventory> getFilms(@PathVariable String actorFirstName, @PathVariable String categoryName,
 			@PathVariable String languageName) {
 		return inventoryService.findFilms(actorFirstName, categoryName, languageName);
+	}
+
+	@GetMapping("customer/{filmTitle}/{categoryName}/{customerLastName}")
+	public List<Inventory> getInventories(@PathVariable String filmTitle, @PathVariable String categoryName,
+			@PathVariable String customerLastName) {
+		return inventoryService.getFilteredInventories(filmTitle, categoryName, customerLastName);
 	}
 
 }

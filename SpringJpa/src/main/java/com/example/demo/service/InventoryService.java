@@ -24,4 +24,10 @@ public class InventoryService {
 		return inventoryRepository.findAll(spec);
 	}
 
+	public List<Inventory> getFilteredInventories(String filmTitle, String categoryName, String customerLastName) {
+		Specification<Inventory> spec = InventoryRepository.findByFilteredInventories(filmTitle, categoryName,
+				customerLastName);
+		return inventoryRepository.findAll(spec);
+	}
+
 }

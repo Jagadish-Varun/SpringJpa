@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.example.demo.entity.Actor;
 import com.example.demo.entity.Category;
+import com.example.demo.entity.Customer;
 import com.example.demo.entity.Film;
 import com.example.demo.entity.FilmActor;
 import com.example.demo.entity.FilmCategory;
@@ -64,6 +65,41 @@ public interface InventoryRepository extends JpaRepository<Inventory, Integer>, 
 
 			return predicates.isEmpty() ? criteriaBuilder.conjunction()
 					: criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
+	}
+
+	public static Specification<Inventory> findByFilteredInventories(String filmTitle, String categoryName,
+			String customerLastName) {
+		return (Root<Inventory> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
+			query.distinct(true);
+
+			Join<Inventory, Film> filmJoin = root.join("film", JoinType.INNER); 
+			Join<Film, FilmCategory> filmCategoryJoin = filmJoin.join("filmCategories", JoinType.INNER);
+			Join<FilmCategory, Category> categoryJoin = filmCategoryJoin.join("category", JoinType.INNER);
+			Join<Inventory, Rental> rentalJoin = root.join("rentals", JoinType.INNER);
+			Join<Rental, Customer> customerJoin = rentalJoin.join("customer", JoinType.INNER);
+
+			List<Predicate> predicates = new ArrayList<>();
+
+			// 🔹 Filter by Film Title
+			if (filmTitle != null && !filmTitle.isEmpty()) {
+				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(filmJoin.get("title")),
+						"%" + filmTitle.toLowerCase() + "%"));
+			}
+
+			// 🔹 Filter by Category Name
+			if (categoryName != null && !categoryName.isEmpty()) {
+				predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(categoryJoin.get("name")),
+						categoryName.toLowerCase()));
+			}
+
+			// 🔹 Filter by Customer Last Name
+			if (customerLastName != null && !customerLastName.isEmpty()) {
+				predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(customerJoin.get("lastName")),
+						customerLastName.toLowerCase()));
+			}
+
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 		};
 	}
 
