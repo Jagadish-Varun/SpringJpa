@@ -19,14 +19,13 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "film")
 @Data
-@JsonIgnoreProperties({"filmActors", "filmCategories", "rentals"}) 
+@JsonIgnoreProperties({ "filmActors", "filmCategories", "rentals" })
 public class Film implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -70,17 +69,13 @@ public class Film implements Serializable {
 	@Column(name = "special_features", columnDefinition = "SET('Trailers','Commentaries','Deleted Scenes','Behind the Scenes')")
 	private String specialFeatures;
 
-
 	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnoreProperties("film")
 	private Set<FilmActor> filmActors;
 
 	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
-	private Set<FilmCategory> filmCategories; 
-	
-//	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
-//	private Set<Rental> rentals;
-//	
+	private Set<FilmCategory> filmCategories;
+
 
 	public Integer getFilmId() {
 		return filmId;
@@ -194,16 +189,10 @@ public class Film implements Serializable {
 		this.filmCategories = filmCategories;
 	}
 
-//	public Set<Rental> getRentals() {
-//		return rentals;
-//	}
-//
-//	public void setRentals(Set<Rental> rentals) {
-//		this.rentals = rentals;
-//	}
+
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+
 }

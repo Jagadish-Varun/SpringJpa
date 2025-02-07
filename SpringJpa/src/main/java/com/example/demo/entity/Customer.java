@@ -2,6 +2,10 @@ package com.example.demo.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,27 +17,29 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "customer")
+@JsonIgnoreProperties({ "rentals" })
 public class Customer {
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id", nullable = false)
-    private Integer customerId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "customer_id", nullable = false)
+	private Integer customerId;
 
-    @Column(name = "first_name", nullable = false, length = 45)
-    private String firstName;
+	@Column(name = "first_name", nullable = false, length = 45)
+	private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 45)
-    private String lastName;
+	@Column(name = "last_name", nullable = false, length = 45)
+	private String lastName;
 
-    @Column(name = "email", length = 50)
-    private String email;
+	@Column(name = "email", length = 50)
+	private String email;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Rental> rentals;
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private Set<Rental> rentals;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Payment> payments;
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	private Set<Payment> payments;
 
 	public Integer getCustomerId() {
 		return customerId;
@@ -82,8 +88,5 @@ public class Customer {
 	public void setPayments(Set<Payment> payments) {
 		this.payments = payments;
 	}
-    
-    
-    
 
 }

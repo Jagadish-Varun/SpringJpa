@@ -2,6 +2,11 @@ package com.example.demo.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,19 +19,20 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "inventory")
+@JsonIgnoreProperties({"rentals"})
 public class Inventory {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "inventory_id")
-    private Integer inventoryId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "inventory_id")
+	private Integer inventoryId;
 
-    @ManyToOne
-    @JoinColumn(name = "film_id", nullable = false)
-    private Film film;
+	@ManyToOne
+	@JoinColumn(name = "film_id", nullable = false)
+	private Film film;
 
-    @OneToMany(mappedBy = "inventory")
-    private Set<Rental> rentals; 
+	@OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
+	private Set<Rental> rentals;
 
 	public Integer getInventoryId() {
 		return inventoryId;
@@ -50,9 +56,6 @@ public class Inventory {
 
 	public void setRentals(Set<Rental> rentals) {
 		this.rentals = rentals;
-	}  
-    
-    
+	}
 
-   
 }

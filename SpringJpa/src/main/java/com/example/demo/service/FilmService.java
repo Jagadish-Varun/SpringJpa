@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.FilmDetailsDTO;
-import com.example.demo.dto.TopRentedFilmDTO;
 import com.example.demo.entity.Film;
 import com.example.demo.repo.FilmRepository;
 
-import jakarta.persistence.Tuple;
 
 @Service
 public class FilmService {
@@ -47,5 +42,7 @@ public class FilmService {
 		Specification<Film> spec = FilmRepository.findByActorName(firstName, lastName);
 		return filmRepository.findAll(spec);
 	}
+	
+	
 
 }

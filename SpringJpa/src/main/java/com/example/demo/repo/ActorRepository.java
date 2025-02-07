@@ -14,6 +14,7 @@ import com.example.demo.entity.FilmActor;
 import com.example.demo.entity.Language;
 
 import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.Predicate;
 
 public interface ActorRepository extends JpaRepository<Actor, Integer>, JpaSpecificationExecutor<Actor> {
 
@@ -27,7 +28,7 @@ public interface ActorRepository extends JpaRepository<Actor, Integer>, JpaSpeci
 
 			Join<Film, Language> languageJoin = filmJoin.join("language", JoinType.INNER);
 
-			jakarta.persistence.criteria.Predicate languagePredicate = cb.equal(cb.lower(languageJoin.get("name")),
+			Predicate languagePredicate = cb.equal(cb.lower(languageJoin.get("name")),
 					languageName.toLowerCase());
 
 			return cb.and(languagePredicate);
@@ -50,7 +51,7 @@ public interface ActorRepository extends JpaRepository<Actor, Integer>, JpaSpeci
 			 Expression<Long> filmCount = cb.count(filmJoin.get("filmId"));
 			 query.groupBy(root.get("actorId"));
 			 
-			 jakarta.persistence.criteria.Predicate minFilmsPredicate = cb.ge(filmCount, minFilmsActed);
+			 Predicate minFilmsPredicate = cb.ge(filmCount, minFilmsActed);
 			 
 			 query.having(minFilmsPredicate);
 			 query.where(languagePredicate);
