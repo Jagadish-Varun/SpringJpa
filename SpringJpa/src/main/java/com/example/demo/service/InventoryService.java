@@ -1,16 +1,12 @@
 package com.example.demo.service;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Inventory;
-import com.example.demo.entity.Payment;
-import com.example.demo.entity.Rental;
 import com.example.demo.repo.InventoryRepository;
 
 @Service
@@ -28,6 +24,16 @@ public class InventoryService {
 		Specification<Inventory> spec = InventoryRepository.findByFilteredInventories(filmTitle, categoryName,
 				customerLastName);
 		return inventoryRepository.findAll(spec);
+	}
+
+	public List<Inventory> getFilteredInventoriesByFilm(String filmTitle, String categoryName, String customerLastName,
+			String actorFirstName) {
+		Specification<Inventory> spec = InventoryRepository.findByFiltersByFilm(filmTitle, categoryName,
+				customerLastName, actorFirstName);
+
+		List<Inventory> results = inventoryRepository.findAll(spec);
+
+		return results;
 	}
 
 }
