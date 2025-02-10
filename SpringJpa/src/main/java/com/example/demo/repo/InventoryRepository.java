@@ -102,43 +102,42 @@ public interface InventoryRepository extends JpaRepository<Inventory, Integer>, 
 
 	public static Specification<Inventory> findByFiltersByFilm(String filmTitle, String categoryName,
 			String customerLastName, String actorFirstName) {
-		return (Root<Inventory> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-			query.distinct(true);
+		   return (Root<Inventory> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
+		        query.distinct(true);
 
-			Join<Inventory, Film> filmJoin = root.join("film", JoinType.INNER);
+		        Join<Inventory, Rental> rentalJoin = root.join("rentals", JoinType.INNER);
+		        Join<Rental, Customer> customerJoin = rentalJoin.join("customer", JoinType.INNER);
 
-			Join<Film, FilmActor> filmActorJoin = filmJoin.join("filmActors", JoinType.INNER);
-			Join<FilmActor, Actor> actorJoin = filmActorJoin.join("actor", JoinType.INNER);
+		        Join<Inventory, Film> filmJoin = root.join("film", JoinType.INNER);
+		        Join<Film, FilmActor> filmActorJoin = filmJoin.join("filmActors", JoinType.INNER);
+		        Join<FilmActor, Actor> actorJoin = filmActorJoin.join("actor", JoinType.INNER);
 
-			Join<Inventory, Rental> rentalJoin = root.join("rentals", JoinType.INNER);
-			Join<Rental, Customer> customerJoin = rentalJoin.join("customer", JoinType.INNER);
+		        Join<Film, FilmCategory> filmCategoryJoin = filmJoin.join("filmCategories", JoinType.INNER);
+		        Join<FilmCategory, Category> categoryJoin = filmCategoryJoin.join("category", JoinType.INNER);
 
-			List<Predicate> predicates = new ArrayList<>();
+		        List<Predicate> predicates = new ArrayList<>();
 
-			if (filmTitle != null && !filmTitle.isEmpty()) {
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(filmJoin.get("title")),
-						"%" + filmTitle.toLowerCase() + "%"));
-			}
+		        if (filmTitle != null && !filmTitle.isEmpty()) {
+		            predicates.add(criteriaBuilder.like(
+		                    criteriaBuilder.lower(filmJoin.get("title")), "%" + filmTitle.toLowerCase() + "%"));
+		        }
 
-			if (categoryName != null && !categoryName.isEmpty()) {
-				Join<Film, FilmCategory> filmCategoryJoin = filmJoin.join("filmCategories", JoinType.INNER);
-				Join<FilmCategory, Category> categoryJoin = filmCategoryJoin.join("category", JoinType.INNER);
-				predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(categoryJoin.get("name")),
-						categoryName.toLowerCase()));
-			}
+		        if (categoryName != null && !categoryName.isEmpty()) {
+		            predicates.add(criteriaBuilder.like(
+		                    criteriaBuilder.lower(categoryJoin.get("name")), "%" + categoryName.toLowerCase() + "%"));
+		        }
 
-			if (customerLastName != null && !customerLastName.isEmpty()) {
-				predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(customerJoin.get("lastName")),
-						customerLastName.toLowerCase()));
-			}
+		        if (customerLastName != null && !customerLastName.isEmpty()) {
+		            predicates.add(criteriaBuilder.like(
+		                    criteriaBuilder.lower(customerJoin.get("lastName")), "%" + customerLastName.toLowerCase() + "%"));
+		        }
 
-			if (actorFirstName != null && !actorFirstName.isEmpty()) {
-				predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(actorJoin.get("firstName")),
-						actorFirstName.toLowerCase()));
-			}
+		        if (actorFirstName != null && !actorFirstName.isEmpty()) {
+		            predicates.add(criteriaBuilder.like(
+		                    criteriaBuilder.lower(actorJoin.get("firstName")), "%" + actorFirstName.toLowerCase() + "%"));
+		        }
 
-			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-		};
+		        return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		    };
 	}
-
 }
