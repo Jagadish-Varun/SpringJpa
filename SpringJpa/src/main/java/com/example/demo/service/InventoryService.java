@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,11 @@ public class InventoryService {
 		return inventoryRepository.findAll(spec);
 	}
 
-	public List<Inventory> getFilteredInventoriesByFilm(String filmTitle, String categoryName, String customerLastName,
-			String actorFirstName) {
-		Specification<Inventory> spec = InventoryRepository.findByFiltersByFilm(filmTitle, categoryName,
-				customerLastName, actorFirstName);
-
+	public List<Inventory> getFilteredInventoriesByFilters(String filmTitle, String categoryName,
+			String customerFirstName, BigDecimal paymentAmount) {
+		Specification<Inventory> spec = InventoryRepository.findByFiltersByPayment(filmTitle, categoryName,
+				customerFirstName, paymentAmount);
 		List<Inventory> results = inventoryRepository.findAll(spec);
-
 		return results;
 	}
 
